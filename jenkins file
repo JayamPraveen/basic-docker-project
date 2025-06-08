@@ -1,0 +1,22 @@
+pipeline{
+    agent any
+    stages{
+        stage('pull the code from git'){
+            steps{
+                git 'https://github.com/JayamPraveen/dockerimage.git'
+            }
+        }
+    
+    stage('build image'){
+        steps{
+            sh 'docker build -t img:$BUILD_ID .'
+        }
+    }
+    stage('build a container'){
+        steps{
+            sh 'docker container run -d --name cont$BUILD_ID -p $BUILD_ID:80 img:$BUILD_ID'
+        }
+    }
+    
+}
+}
